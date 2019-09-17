@@ -1,7 +1,6 @@
 /**
  * https://getbootstrap.com/docs/3.3/getting-started/#examples
  */
-const nodemon = require('nodemon')
 const express = require('express')
 const path = require('path')
 const bodyParser = require('body-parser')
