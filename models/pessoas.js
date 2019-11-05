@@ -1,9 +1,26 @@
 //funcao pura. Depende unica e exclusivamente de conn
-const findAll = (conn) =>{
+const findAll = (conn, params) =>{
     return new Promise((resolve, reject)=>{
-        conn.query('select * from pessoas', (error, results)=>{
-            if(!error) resolve(results)
-            else reject(error)
+        const offset = params.currentPage * params.pageSize
+        const pageSize = params.pageSize
+        conn.query('select count(*) as total from pessoas', (err, res)=>{
+            const total = res[0].total
+            const totalPages = parseInt(total/pageSize)
+            if(err){
+                reject(err)
+            }else{
+                conn.query(`select * from pessoas limit ${offset}, ${pageSize}`, (error, results)=>{
+                    if(!error) resolve({
+                        data:results,
+                        pagination:{
+                            pages: totalPages,
+                            pageSize,
+                            currentPage: parseInt(params.currentPage)
+                        }
+                    })
+                    else reject(error)
+                })
+            }
         })
     })
 }

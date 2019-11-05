@@ -8,9 +8,13 @@ const index = async(conn, req, res)=>{
     // conn.query('select * from pessoas', (err, results)=>{
     //     res.send(results)
     // })
-    const result = await pessoas.findAll(conn)
+    const params = {
+        pageSize: req.query.pageSize || 10,
+        currentPage: req.query.page || 0
+    }
+    const result = await pessoas.findAll(conn, params)
     // res.send(result)
-    res.render('pessoas/index', {pessoas: result})
+    res.render('pessoas/index', {result})
 }
 
 const deleteOne = async(conn, req, res) =>{

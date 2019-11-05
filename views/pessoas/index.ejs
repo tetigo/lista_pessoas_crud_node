@@ -8,7 +8,7 @@
             <th>Nome</th>
             <th>Ações</th>
         </tr>
-        <% pessoas.map( pessoa => { %>
+        <% result.data.map( pessoa => { %>
         <tr>
             <td><%= pessoa.nome %></td>
             <td>
@@ -20,6 +20,23 @@
         </tr>
         <% }) %>
     </table>
+    Mostrar: <a href="/pessoas?pageSize=10">10</a>
+    <a href="/pessoas?pageSize=50">50</a>
+    <a href="/pessoas?pageSize=100">100</a>
+    <a href="/pessoas?pageSize=200">200</a>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <% if(result.pagination.currentPage > 0){ %>
+                <li class="page-item"><a class="page-link" href="/pessoas?page=<%=(result.pagination.currentPage-1)%>&pageSize=<%=result.pagination.pageSize%>">Previous</a></li>
+                <% } %>
+                <% for(let i = 0; i < result.pagination.pages; i++ ){ %>
+                    <li class="page-item <%if(i == result.pagination.currentPage){%>active<%}%>"><a class="page-link" href="/pessoas?page=<%= i %>&pageSize=<%=result.pagination.pageSize%>"><%= i+1 %></a></li>
+                <% } %>
+                <% if(result.pagination.currentPage < result.pagination.pages-1){ %>
+                    <li class="page-item"><a class="page-link" href="/pessoas?page=<%=result.pagination.currentPage+1%>&pageSize=<%=result.pagination.pageSize%>">Next</a></li>
+                <% }%>
+        </ul>
+      </nav>
 
 <% include ../partials/footer.ejs %>
 
